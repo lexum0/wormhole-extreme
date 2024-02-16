@@ -45,6 +45,65 @@
     <script src="dist/js/polyfills.js"></script>
     <script src="dist/js/bundle.min.js"></script>
     <script src="dist/js/app.js"></script>
-
+<script>
+// Lx Backgrounds support
+        const updateMousePosition = true;
+        var fps = 40;
+        const invertYCoordinate = true;
+        var backgroundsX = 0;
+        var backgroundsY = 0;
+        var backgroundsIsMouseDown = false;
+        var lastMouseDown = new Date();
+        var bgsCanvas = null;
+        /// Backgrounds entry point
+        function updateMousePos(x, y) {
+           if (!bgsCanvas) {
+               bgsCanvas = window;
+           }
+            if (backgroundsX == x
+                && backgroundsY == y) {
+                // Wait 3 seconds to release 'mouse click / down event'
+                let now = new Date();
+                if (now.getSeconds() > lastMouseDown.getSeconds() + 1) {
+                    //backgroundsUpdateMouseUp(x, y);
+                    backgroundsIsMouseDown = false;
+                }
+                return;
+            }
+            backgroundsX = x;
+            backgroundsY = y;
+            lastMouseDown = new Date()
+            
+            backgroundsUpdateMouseMoved(x, y);
+            
+            if (backgroundsIsMouseDown) {
+                //backgroundsUpdateMouseMoved(x, y);
+            } else {
+                backgroundsIsMouseDown = true;
+                //backgroundsUpdateMouseDown(x, y);
+            }
+        }
+        function backgroundsUpdateMouseDown(x, y) {
+           let evt = new MouseEvent("mousedown", {
+               clientX: x,
+               clientY: y,
+             });
+           bgsCanvas.dispatchEvent(evt);
+        }
+        function backgroundsUpdateMouseMoved(x, y) {
+               let evt = new MouseEvent("mousemove", {
+                   clientX: x,
+                   clientY: y,
+                 });
+           bgsCanvas.dispatchEvent(evt);
+        }
+        function backgroundsUpdateMouseUp(x, y) {
+           let evt = new MouseEvent("mouseup", {
+               clientX: x,
+               clientY: y,
+             });
+           bgsCanvas.dispatchEvent(evt);
+        }
+</script>
 </body>
 </html>
